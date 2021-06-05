@@ -14,16 +14,25 @@ class MyDBHandler(context: Context, name: String?,
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        val create = ("create table test(cos varchar2);")
+        val create = ("create table test(name varchar2, orgname varchar2, id bigint, year varchar2, desc varchar2);")
         db.execSQL(create)
-        val values = ContentValues()
-        values.put("cos", "tescik")
-        db.insert("test", null, values)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("drop table if exists test")
         onCreate(db)
+    }
+
+    fun addGame(id: Long, name: String, orgname: String, year: String, desc: String){
+        val values = ContentValues()
+        values.put("name", name)
+        values.put("id", id)
+        values.put("orgname", orgname)
+        values.put("year", year)
+        values.put("desc", desc)
+        val db = this.writableDatabase
+        db.insert("test", null, values)
+        db.close()
     }
 
     fun getTest():String{
